@@ -3,9 +3,7 @@
 
 # © 2024 Nils Dagsson Moskopp <nils.moskopp@grandcentrix.net>
 
-from copy import deepcopy
 from hypothesis import assume, given, strategies
-from logging import warning
 from mypy.api import run as mypy_api_run
 from typing import TypedDict
 
