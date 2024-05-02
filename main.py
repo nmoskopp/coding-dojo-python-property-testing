@@ -3,8 +3,11 @@
 
 # © 2024 Nils Dagsson Moskopp <nils.moskopp@grandcentrix.net>
 
+from copy import deepcopy
+from hypothesis import given, strategies
 from logging import warning
 from mypy.api import run as mypy_api_run
+from typing import TypedDict
 
 import pycodestyle
 import unittest
@@ -36,6 +39,61 @@ class TestCodeFormat(unittest.TestCase):
             result.total_errors,
             0,
         )
+
+
+class MoneyStash(TypedDict):
+    _5: int
+    _10: int
+    _20: int
+    _50: int
+    _100: int
+
+
+class ATM:
+    def __init__(self, stash: MoneyStash):
+        self.stash = stash
+
+    def withdraw_all(self) -> MoneyStash:
+        result = deepcopy(self.stash)
+        self.stash = {
+            '_5': 0,
+            '_10': 0,
+            '_20': 0,
+            '_50': 0,
+            '_100': 0,
+        }
+        return result
+
+
+@given(
+    _5=strategies.integers(),
+    _10=strategies.integers(),
+    _20=strategies.integers(),
+    _50=strategies.integers(),
+    _100=strategies.integers(),
+)
+def test_withdrawing_all_money(
+        _5: int,
+        _10: int,
+        _20: int,
+        _50: int,
+        _100: int,
+) -> None:
+    banknotes: MoneyStash = {
+        '_5': _5,
+        '_10': _10,
+        '_20': _20,
+        '_50': _50,
+        '_100': _100,
+    }
+
+    atm = ATM(banknotes)
+    money = atm.withdraw_all()
+    assert money['_5'] == _5
+    assert money['_10'] == _10
+    assert money['_20'] == _20
+    assert money['_50'] == _50
+    assert money['_100'] == _100
 
 
 if __name__ == '__main__':
