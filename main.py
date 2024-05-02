@@ -50,55 +50,59 @@ class MoneyStash(TypedDict):
 
 
 class ATM:
-    def __init__(self, stash: MoneyStash):
-        self.stash = stash
-
-    def withdraw_all(self) -> MoneyStash:
-        result = deepcopy(self.stash)
-        self.stash = {
+    def __init__(self) -> None:
+        self.stash: MoneyStash = {
             '_5': 0,
             '_10': 0,
             '_20': 0,
             '_50': 0,
             '_100': 0,
         }
-        return result
+
+    def deposit(self, deposited_stash: MoneyStash) -> None:
+        self.stash['_5'] += deposited_stash['_5']
+        self.stash['_10'] += deposited_stash['_10']
+        self.stash['_20'] += deposited_stash['_20']
+        self.stash['_50'] += deposited_stash['_50']
+        self.stash['_100'] += deposited_stash['_100']
 
 
-@given(
-    _5=strategies.integers(),
-    _10=strategies.integers(),
-    _20=strategies.integers(),
-    _50=strategies.integers(),
-    _100=strategies.integers(),
-)
-def test_withdrawing_all_money(
-        _5: int,
-        _10: int,
-        _20: int,
-        _50: int,
-        _100: int,
-) -> None:
-    assume(_5 >= 0)
-    assume(_10 >= 0)
-    assume(_20 >= 0)
-    assume(_50 >= 0)
-    assume(_100 >= 0)
-    banknotes: MoneyStash = {
-        '_5': _5,
-        '_10': _10,
-        '_20': _20,
-        '_50': _50,
-        '_100': _100,
-    }
+class TestATM(unittest.TestCase):
+    @given(
+        _5=strategies.integers(),
+        _10=strategies.integers(),
+        _20=strategies.integers(),
+        _50=strategies.integers(),
+        _100=strategies.integers(),
+    )
+    def test_depositing_money(
+            self,
+            _5: int,
+            _10: int,
+            _20: int,
+            _50: int,
+            _100: int,
+    ) -> None:
+        assume(_5 >= 0)
+        assume(_10 >= 0)
+        assume(_20 >= 0)
+        assume(_50 >= 0)
+        assume(_100 >= 0)
+        banknotes: MoneyStash = {
+            '_5': _5,
+            '_10': _10,
+            '_20': _20,
+            '_50': _50,
+            '_100': _100,
+        }
 
-    atm = ATM(banknotes)
-    money = atm.withdraw_all()
-    assert money['_5'] == _5
-    assert money['_10'] == _10
-    assert money['_20'] == _20
-    assert money['_50'] == _50
-    assert money['_100'] == _100
+        atm = ATM()
+        atm.deposit(banknotes)
+        assert atm.stash['_5'] == _5
+        assert atm.stash['_10'] == _10
+        assert atm.stash['_20'] == _20
+        assert atm.stash['_50'] == _50
+        assert atm.stash['_100'] == _100
 
 
 if __name__ == '__main__':
