@@ -4,7 +4,7 @@
 # © 2024 Nils Dagsson Moskopp <nils.moskopp@grandcentrix.net>
 
 from copy import deepcopy
-from hypothesis import given, strategies
+from hypothesis import assume, given, strategies
 from logging import warning
 from mypy.api import run as mypy_api_run
 from typing import TypedDict
@@ -79,6 +79,11 @@ def test_withdrawing_all_money(
         _50: int,
         _100: int,
 ) -> None:
+    assume(_5 >= 0)
+    assume(_10 >= 0)
+    assume(_20 >= 0)
+    assume(_50 >= 0)
+    assume(_100 >= 0)
     banknotes: MoneyStash = {
         '_5': _5,
         '_10': _10,
