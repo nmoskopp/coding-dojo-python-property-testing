@@ -96,11 +96,11 @@ class TestATM(unittest.TestCase):
 
         atm = ATM()
         atm.deposit(banknotes)
-        assert atm.stash['_5'] == _5
-        assert atm.stash['_10'] == _10
-        assert atm.stash['_20'] == _20
-        assert atm.stash['_50'] == _50
-        assert atm.stash['_100'] == _100
+        self.assertEqual(atm.stash['_5'], _5)
+        self.assertEqual(atm.stash['_10'], _10)
+        self.assertEqual(atm.stash['_20'], _20)
+        self.assertEqual(atm.stash['_50'], _50)
+        self.assertEqual(atm.stash['_100'], _100)
 
 
 if __name__ == '__main__':
