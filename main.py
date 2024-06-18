@@ -37,11 +37,11 @@ class ATM:
 
 class TestATM(unittest.TestCase):
     @given(
-        _5=strategies.integers(),
-        _10=strategies.integers(),
-        _20=strategies.integers(),
-        _50=strategies.integers(),
-        _100=strategies.integers(),
+        _5=strategies.integers(min_value=0),
+        _10=strategies.integers(min_value=0),
+        _20=strategies.integers(min_value=0),
+        _50=strategies.integers(min_value=0),
+        _100=strategies.integers(min_value=0),
     )
     def test_depositing_money(
             self,
@@ -51,11 +51,8 @@ class TestATM(unittest.TestCase):
             _50: int,
             _100: int,
     ) -> None:
-        assume(_5 >= 0)
-        assume(_10 >= 0)
-        assume(_20 >= 0)
-        assume(_50 >= 0)
-        assume(_100 >= 0)
+        # Assume we pay in more than zero money.
+        assume(_5 + _10 + _20 + _50 + _100 > 0)
         banknotes: MoneyStash = {
             '_5': _5,
             '_10': _10,
