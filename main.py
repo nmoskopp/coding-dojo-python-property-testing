@@ -51,8 +51,12 @@ class TestATM(unittest.TestCase):
             _50: int,
             _100: int,
     ) -> None:
-        # Assume we pay in more than zero money.
-        assume(_5 + _10 + _20 + _50 + _100 > 0)
+        # Assume we have a positive amount of each banknote
+        assume(_5 > 0)
+        assume(_10 > 0)
+        assume(_20 > 0)
+        assume(_50 > 0)
+        assume(_100 > 0)
         banknotes: MoneyStash = {
             '_5': _5,
             '_10': _10,
