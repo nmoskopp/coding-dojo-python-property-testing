@@ -31,7 +31,7 @@ class ATM:
         self.stash['_5'] += deposited_stash['_5']
         self.stash['_10'] += deposited_stash['_10']
         self.stash['_20'] += deposited_stash['_20']
-        self.stash['_50'] += deposited_stash['_50']
+        self.stash['_50'] += deposited_stash['_5']
         self.stash['_100'] += deposited_stash['_100']
 
 
