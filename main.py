@@ -35,42 +35,38 @@ class ATM:
         self.stash['_100'] += deposited_stash['_100']
 
 
+@strategies.composite
+def banknotes_strategy(draw) -> MoneyStash:
+    positive_integer = strategies.integers(min_value=0)
+    _5 = draw(positive_integer)
+    _10 = draw(positive_integer)
+    _20 = draw(positive_integer)
+    _50 = draw(positive_integer)
+    _100 = draw(positive_integer)
+    assume(_5 + _10 + _20 + _50 + _100 > 1)
+    banknotes: MoneyStash = {
+        '_5': _5,
+        '_10': _10,
+        '_20': _20,
+        '_50': _50,
+        '_100': _100,
+    }
+    return banknotes
+
+
 class TestATM(unittest.TestCase):
-    @given(
-        _5=strategies.integers(),
-        _10=strategies.integers(),
-        _20=strategies.integers(),
-        _50=strategies.integers(),
-        _100=strategies.integers(),
-    )
+    @given(banknotes=banknotes_strategy())
     def test_depositing_money(
             self,
-            _5: int,
-            _10: int,
-            _20: int,
-            _50: int,
-            _100: int,
+            banknotes,
     ) -> None:
-        assume(_5 >= 0)
-        assume(_10 >= 0)
-        assume(_20 >= 0)
-        assume(_50 >= 0)
-        assume(_100 >= 0)
-        banknotes: MoneyStash = {
-            '_5': _5,
-            '_10': _10,
-            '_20': _20,
-            '_50': _50,
-            '_100': _100,
-        }
-
         atm = ATM()
         atm.deposit(banknotes)
-        self.assertEqual(atm.stash['_5'], _5)
-        self.assertEqual(atm.stash['_10'], _10)
-        self.assertEqual(atm.stash['_20'], _20)
-        self.assertEqual(atm.stash['_50'], _50)
-        self.assertEqual(atm.stash['_100'], _100)
+        self.assertEqual(atm.stash['_5'], banknotes['_5'])
+        self.assertEqual(atm.stash['_10'], banknotes['_10'])
+        self.assertEqual(atm.stash['_20'], banknotes['_20'])
+        self.assertEqual(atm.stash['_50'], banknotes['_50'])
+        self.assertEqual(atm.stash['_100'], banknotes['_100'])
 
 
 if __name__ == '__main__':
