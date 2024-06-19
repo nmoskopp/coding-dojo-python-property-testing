@@ -53,13 +53,25 @@ class ATM:
             '_100': 100,
         }
 
+        def total_value_of_money_stash(my_stash: MoneyStash):
+            sum([values[key]*val for key, val in my_stash.items()])
+
         while diff_money > 0:
             for bill_type in reversed(self.stash.keys()):
-                if result[bill_type] < amount:
-                    diff_money = diff_money - result[bill_type]
+                available_bills = self.stash[bill_type]
+
+                if diff_money < values[bill_type]:
+                    while available_bills > 0:
+                        result[bill_type] += 1
+                        available_bills -= 1
+
+                if total_value_of_money_stash(result) == amount:
+                    return result
+
+        raise ValueError("Not enough money in the ATM")
 
 
-                available_bills = self.stash["bill_type"]
+
 
 
 
