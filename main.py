@@ -35,7 +35,7 @@ class ATM:
         self.stash['_100'] += deposited_stash['_100']
 
     def withdraw(self, amount: int) -> MoneyStash:
-        total_amount_withdrawed = 0
+        # total_amount_withdrawed = 0
         diff_money = amount
         result: MoneyStash = {
             '_5': 0,
@@ -54,7 +54,9 @@ class ATM:
         }
 
         def total_value_of_money_stash(my_stash: MoneyStash):
-            sum([values[key]*val for key, val in my_stash.items()])
+            items = my_stash.items()
+            items_gen = [values[key] * val for (key, val) in items]
+            sum(items_gen)
 
         while diff_money > 0:
             for bill_type in reversed(self.stash.keys()):
@@ -69,11 +71,6 @@ class ATM:
                     return result
 
         raise ValueError("Not enough money in the ATM")
-
-
-
-
-
 
 
 class TestATM(unittest.TestCase):
