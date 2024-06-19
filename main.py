@@ -34,7 +34,7 @@ class ATM:
         self.stash['_50'] += deposited_stash['_50']
         self.stash['_100'] += deposited_stash['_100']
 
-    def withdraw(self) -> MoneyStash:
+    def withdraw(self, money: int) -> MoneyStash:
         return self.stash.copy()
 
 
@@ -92,7 +92,7 @@ class TestATM(unittest.TestCase):
 
         new_atm.deposit(machine_money)
 
-        my_money = new_atm.withdraw()
+        my_money = new_atm.withdraw(0)
 
         assert my_money == machine_money
 
@@ -120,8 +120,8 @@ class TestATM(unittest.TestCase):
         }
 
         new_atm.deposit(machine_money)
+        money = 0
 
-        money=0
         my_money = new_atm.withdraw(money)
 
         assert my_money == machine_money
