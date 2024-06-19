@@ -35,7 +35,6 @@ class ATM:
         self.stash['_100'] += deposited_stash['_100']
 
     def withdraw(self, money: int) -> MoneyStash:
-        """
         values = {
             '_5': 5,
             '_10': 10,
@@ -43,8 +42,14 @@ class ATM:
             '_50': 50,
             '_100': 100,
         }
-        total_money = [values[value] * value for value in self.stash.items()]
-        """
+
+        money_list = []
+        for key, value in self.stash.items():
+            if isinstance(value, int):
+                money_list.append(values[key]*value)
+
+        _ = sum(money_list)
+
         return self.stash.copy()
 
 
