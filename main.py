@@ -73,6 +73,16 @@ class TestATM(unittest.TestCase):
         self.assertEqual(atm.stash['_50'], _50)
         self.assertEqual(atm.stash['_100'], _100)
 
+    def test_all_values_are_two(self):
+        new_atm = ATM()
+        new_atm.deposit({'_5': 2, '_10': 2, '_20': 2, '_50': 2, '_100': 2})
+
+        assert new_atm.stash["_5"] == 2
+        assert new_atm.stash["_10"] == 2
+        assert new_atm.stash["_20"] == 2
+        assert new_atm.stash["_50"] == 2
+        assert new_atm.stash["_100"] == 2
+
 
 if __name__ == '__main__':
     unittest.main(exit=False)
