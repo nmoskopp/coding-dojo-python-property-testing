@@ -31,7 +31,7 @@ class ATM:
         self.stash['_5'] += deposited_stash['_5']
         self.stash['_10'] += deposited_stash['_10']
         self.stash['_20'] += deposited_stash['_20']
-        self.stash['_50'] += deposited_stash['_5']
+        self.stash['_50'] += deposited_stash['_50']
         self.stash['_100'] += deposited_stash['_100']
 
 
@@ -73,11 +73,11 @@ class TestATM(unittest.TestCase):
         self.assertEqual(atm.stash['_50'], _50)
         self.assertEqual(atm.stash['_100'], _100)
 
-    def test_all_values_are_two(self):
+    def test_all_values_are_same_as_deposited(self):
         new_atm = ATM()
-        new_atm.deposit({'_5': 2, '_10': 2, '_20': 2, '_50': 2, '_100': 2})
+        new_atm.deposit({'_5': 1, '_10': 2, '_20': 2, '_50': 2, '_100': 2})
 
-        assert new_atm.stash["_5"] == 2
+        assert new_atm.stash["_5"] == 1
         assert new_atm.stash["_10"] == 2
         assert new_atm.stash["_20"] == 2
         assert new_atm.stash["_50"] == 2
