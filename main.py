@@ -44,9 +44,21 @@ class ATM:
             '_50': 0,
             '_100': 0,
         }
-        while diff_money>0:
+
+        values = {
+            '_5': 5,
+            '_10': 10,
+            '_20': 20,
+            '_50': 50,
+            '_100': 100,
+        }
+
+        while diff_money > 0:
             for bill_type in reversed(self.stash.keys()):
-                if()
+                if result[bill_type] < amount:
+                    diff_money = diff_money - result[bill_type]
+
+
                 available_bills = self.stash["bill_type"]
 
 
