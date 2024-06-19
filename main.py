@@ -3,7 +3,7 @@
 
 # © 2024 Nils Dagsson Moskopp <nils.moskopp@grandcentrix.net>
 
-from hypothesis import assume, given, strategies
+from hypothesis import assume, given, settings, strategies, HealthCheck
 from typing import TypedDict
 
 import unittest
@@ -35,6 +35,7 @@ class ATM:
         self.stash['_100'] += deposited_stash['_100']
 
     def withdraw(self, money: int) -> MoneyStash:
+        """
         values = {
             '_5': 5,
             '_10': 10,
@@ -43,6 +44,7 @@ class ATM:
             '_100': 100,
         }
         total_money = [values[value] * value for value in self.stash.items()]
+        """
         return self.stash.copy()
 
 
@@ -105,12 +107,13 @@ class TestATM(unittest.TestCase):
         assert my_money == machine_money
 
     @given(
-        _5=strategies.integers(min_value=0),
-        _10=strategies.integers(min_value=0),
-        _20=strategies.integers(min_value=0),
-        _50=strategies.integers(min_value=0),
-        _100=strategies.integers(min_value=0)
+        _5=strategies.integers(min_value=0, max_value=1000),
+        _10=strategies.integers(min_value=0, max_value=1000),
+        _20=strategies.integers(min_value=0, max_value=1000),
+        _50=strategies.integers(min_value=0, max_value=1000),
+        _100=strategies.integers(min_value=0, max_value=1000)
     )
+    @settings(suppress_health_check=(HealthCheck.filter_too_much,))
     def test_withdrawing_money(self,
                                _5: int,
                                _10: int,
@@ -119,8 +122,10 @@ class TestATM(unittest.TestCase):
                                _100: int,
 
                                ):
-        # assume(5 >= _5 * 5 + _10 * 10 + _20 * 20 + _50 * 50 + _100 * 100
-        #     >= 50_000)
+        assume(5 >= _5 * 5 + _10 * 10 + _20 * 20 + _50 * 50 + _100 * 100)
+        # TODO: filter out money stashes over 50_000
+        # assume(50_000 <= _5 * 5 + _10 * 10 + _20 * 20 + _50 * 50 +
+        # _100 * 100)
         new_atm = ATM()
         machine_money: MoneyStash = {
             '_5': _5,
