@@ -84,5 +84,9 @@ class TestATM(unittest.TestCase):
         assert new_atm.stash["_100"] == 2
 
 
+    def test_minimum_and_maximum_deposits(self):
+        new_atm = ATM()
+        new_atm.deposit({'_5': 0, '_10': 0, '_20': 0, '_50': 0, '_100': 2})
+
 if __name__ == '__main__':
     unittest.main(exit=False)
