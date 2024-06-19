@@ -34,7 +34,7 @@ class ATM:
         self.stash['_50'] += deposited_stash['_50']
         self.stash['_100'] += deposited_stash['_100']
 
-    def withdraw_all(self) -> MoneyStash:
+    def withdraw(self) -> MoneyStash:
         return self.stash.copy()
 
 
@@ -92,7 +92,7 @@ class TestATM(unittest.TestCase):
 
         new_atm.deposit(machine_money)
 
-        my_money = new_atm.withdraw_all()
+        my_money = new_atm.withdraw()
 
         assert my_money == machine_money
 
@@ -101,22 +101,28 @@ class TestATM(unittest.TestCase):
         _10=strategies.integers(min_value=0),
         _20=strategies.integers(min_value=0),
         _50=strategies.integers(min_value=0),
-        _100=strategies.integers(min_value=0),
+        _100=strategies.integers(min_value=0)
     )
     def test_withdrawing_money(self,
-            _5: int,
-            _10: int,
-            _20: int,
-            _50: int,
-            _100: int
-        ):
-        assume(5 >= _5*5 + _10*10 + _20*20 + _50*50 + _100*100 >= 50_000)
+                               _5: int,
+                               _10: int,
+                               _20: int,
+                               _50: int,
+                               _100: int,
+
+                               ):
+        # assume(5 >= _5 * 5 + _10 * 10 + _20 * 20 + _50 * 50 + _100 * 100
+        #     >= 50_000)
         new_atm = ATM()
-        machine_money = {'_5': _5, '_10': _10, '_20': _20, '_50': _50, '_100': _100}
+        machine_money: MoneyStash = {
+            '_5': _5,
+            '_10': _10, '_20': _20, '_50': _50, '_100': _100
+        }
 
         new_atm.deposit(machine_money)
 
-        my_money = new_atm.withdraw_all()
+        money=0
+        my_money = new_atm.withdraw(money)
 
         assert my_money == machine_money
 
