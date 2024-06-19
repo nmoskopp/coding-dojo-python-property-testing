@@ -36,9 +36,19 @@ class ATM:
 
     def withdraw(self, amount: int) -> MoneyStash:
         total_amount_withdrawed = 0
+        diff_money = amount
+        result: MoneyStash = {
+            '_5': 0,
+            '_10': 0,
+            '_20': 0,
+            '_50': 0,
+            '_100': 0,
+        }
+        while diff_money>0:
+            for bill_type in reversed(self.stash.keys()):
+                if()
+                available_bills = self.stash["bill_type"]
 
-        for bill_type in reversed(self.stash.keys()):
-            available_bills = self.stash["bill_type"]
 
 
 
