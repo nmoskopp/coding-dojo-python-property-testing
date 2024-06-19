@@ -34,6 +34,8 @@ class ATM:
         self.stash['_50'] += deposited_stash['_50']
         self.stash['_100'] += deposited_stash['_100']
 
+    def withdraw(self, amount: int) -> None:
+
 
 class TestATM(unittest.TestCase):
     @given(
@@ -86,7 +88,16 @@ class TestATM(unittest.TestCase):
 
     def test_minimum_and_maximum_deposits(self):
         new_atm = ATM()
-        new_atm.deposit({'_5': 0, '_10': 0, '_20': 0, '_50': 0, '_100': 2})
+        new_atm.deposit({'_5': 1000, '_10': 1000, '_20': 1000, '_50': 1000, '_100': 1000})
+
+        new_atm.withdraw(200)
+
+        new_atm.deposit({'_100': 2})
+
+        assert new_atm.stash["_100"] == 0
+
+    
+
 
 if __name__ == '__main__':
     unittest.main(exit=False)
