@@ -34,37 +34,8 @@ class ATM:
         self.stash['_50'] += deposited_stash['_50']
         self.stash['_100'] += deposited_stash['_100']
 
-    def withdraw(self) -> MoneyStash:
-        # total_amount_withdrawed = 0
-        result: MoneyStash = {
-            '_5': 0,
-            '_10': 0,
-            '_20': 0,
-            '_50': 0,
-            '_100': 0,
-        }
-
-        return result
-
-        '''def total_value_of_money_stash(my_stash: MoneyStash):
-            copy_my_stash = my_stash.copy()
-            items = copy_my_stash.items()
-            items_gen = [int(values[key]) * int(val) for (key, val) in items]
-            sum(items_gen)
-
-        while diff_money > 0:
-            for bill_type in reversed(self.stash.keys()):
-                available_bills = self.stash[bill_type]
-
-                if diff_money < values[bill_type]:
-                    while available_bills > 0:
-                        result[bill_type] += 1
-                        available_bills -= 1
-
-                if total_value_of_money_stash(result) == amount:
-                    return result
-
-        raise ValueError("Not enough money in the ATM")'''
+    def withdraw_all(self) -> MoneyStash:
+        return self.stash.copy()
 
 
 class TestATM(unittest.TestCase):
@@ -121,7 +92,31 @@ class TestATM(unittest.TestCase):
 
         new_atm.deposit(machine_money)
 
-        my_money = new_atm.withdraw()
+        my_money = new_atm.withdraw_all()
+
+        assert my_money == machine_money
+
+    @given(
+        _5=strategies.integers(min_value=0),
+        _10=strategies.integers(min_value=0),
+        _20=strategies.integers(min_value=0),
+        _50=strategies.integers(min_value=0),
+        _100=strategies.integers(min_value=0),
+    )
+    def test_withdrawing_money(self,
+            _5: int,
+            _10: int,
+            _20: int,
+            _50: int,
+            _100: int
+        ):
+        assume(5 >= _5*5 + _10*10 + _20*20 + _50*50 + _100*100 >= 50_000)
+        new_atm = ATM()
+        machine_money = {'_5': _5, '_10': _10, '_20': _20, '_50': _50, '_100': _100}
+
+        new_atm.deposit(machine_money)
+
+        my_money = new_atm.withdraw_all()
 
         assert my_money == machine_money
 
